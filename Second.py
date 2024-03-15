@@ -3,6 +3,7 @@ import random
 import string
 from datetime import datetime, timedelta
 
+
 class Utilisateur:
     def __init__(self, prenom, nom, profil, droits):
         self.prenom = prenom
@@ -36,6 +37,7 @@ class Utilisateur:
     def supprimer(self):
         # Code pour supprimer l'utilisateur de la base de données
         pass
+
 
 class GestionUtilisateurs:
     def __init__(self):

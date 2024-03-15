@@ -18,9 +18,11 @@ CREATE TABLE IF NOT EXISTS employes (
 ''')
 conn.commit()
 
+
 def gen_id(prenom, nom):
     # Crée un identifiant à partir du prénom+nom
     return prenom[0].lower() + nom.lower()
+
 
 def mdp_fort(taille=8):
     # Génère un mot de passe aléatoire avec ces 4 critères
@@ -31,6 +33,7 @@ def mdp_fort(taille=8):
     random.shuffle(mdp)
     return ''.join(mdp)
 
+
 def enregistrer_employe(prenom, nom):
     identifiant = gen_id(prenom, nom)
     mdp = mdp_fort(taille=10)
@@ -39,6 +42,7 @@ def enregistrer_employe(prenom, nom):
                    (prenom, nom, identifiant, mdp))
     conn.commit()
     return identifiant, mdp
+
 
 def verifier_employe_dans_db(identifiant, mdp):
     # Vérifie si l'employé avec l'identifiant donné existe dans la base de données
