@@ -1,0 +1,2 @@
+Pour ouvrir et consulter la base de données (BDD.db), vous pouvez utiliser DB Browser for SQLite.
+L'application est déjà fournie et prête au lancement, il suffit d'ouvrir la BDD avec 'DB Browser for SQLite.exe'
