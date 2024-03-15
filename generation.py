@@ -10,17 +10,20 @@ cursor = conn.cursor()
 cursor.execute('''
 CREATE TABLE IF NOT EXISTS employes (
     ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-    prenom TEXT,
     nom TEXT,
-    identifiant TEXT UNIQUE,
-    mdp TEXT
+    prenom TEXT,
+    login TEXT UNIQUE,
+    mdp TEXT,
+    email TEXT UNIQUE,
+    numero NUMERIC UNIQUE,
+    embauche DATE
 )
 ''')
 conn.commit()
 
 
 def gen_id(prenom, nom):
-    # Crée un identifiant à partir du prénom+nom
+    # Crée un login à partir du prénom+nom
     return prenom[0].lower() + nom.lower()
 
 
@@ -35,18 +38,22 @@ def mdp_fort(taille=8):
 
 
 def enregistrer_employe(prenom, nom):
-    identifiant = gen_id(prenom, nom)
+    login = gen_id(prenom, nom)
     mdp = mdp_fort(taille=10)
-    # Insertion des données dans la base de données SQLite
-    cursor.execute('INSERT INTO employes (prenom, nom, identifiant, mdp) VALUES (?, ?, ?, ?)',
-                   (prenom, nom, identifiant, mdp))
-    conn.commit()
-    return identifiant, mdp
+    try:
+        # Insertion des données dans la base de données SQLite
+        cursor.execute('INSERT INTO employes (prenom, nom, login, mdp) VALUES (?, ?, ?, ?)',
+                       (prenom, nom, login, mdp))
+        conn.commit()
+    except sqlite3.IntegrityError:
+        print(f"Erreur: L'identifiant {login} existe déjà dans la base de données.")
+        return None, None
+    return login, mdp
 
 
-def verifier_employe_dans_db(identifiant, mdp):
-    # Vérifie si l'employé avec l'identifiant donné existe dans la base de données
-    cursor.execute('SELECT mdp FROM employes WHERE identifiant = ?', (identifiant,))
+def verifier_employe_dans_db(login, mdp):
+    # Vérifie si l'employé avec l'login donné existe dans la base de données
+    cursor.execute('SELECT mdp FROM employes WHERE login = ?', (login,))
     mdp_enregistre = cursor.fetchone()
     return mdp_enregistre is not None and mdp_enregistre[0] == mdp
 
