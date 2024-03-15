@@ -22,6 +22,7 @@ CREATE TABLE IF NOT EXISTS employes (
 ''')
 
 # Création de la table unitée si elle n'existe pas déjà
+
 cursor.execute('''
 CREATE TABLE IF NOT EXISTS unitee (
     id_unitee INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
