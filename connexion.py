@@ -1,9 +1,9 @@
 import generation
 
 
-def verifier_identifiants(identifiant, mdp):
+def verifier_identifiants(login, mdp):
     # Vérifie si l'identifiant et le mot de passe correspondent à ceux enregistrés dans la base de données
-    return generation.verifier_employe_dans_db(identifiant, mdp)
+    return generation.verifier_employe_dans_db(login, mdp)
 
 
 def demander_identifiants():
