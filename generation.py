@@ -7,6 +7,7 @@ conn = sqlite3.connect('BDD.db')
 cursor = conn.cursor()
 
 # Création de la table des employés si elle n'existe pas déjà
+
 cursor.execute('''
 CREATE TABLE IF NOT EXISTS employes (
     ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
@@ -19,8 +20,66 @@ CREATE TABLE IF NOT EXISTS employes (
     embauche DATE
 )
 ''')
-conn.commit()
 
+# Création de la table unitée si elle n'existe pas déjà
+cursor.execute('''
+CREATE TABLE IF NOT EXISTS unitee (
+    id_unitee INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    region TEXT,
+    nb_employe NUMERIC,
+    date_de_creation DATE
+)
+''')
+
+# Création de la table des metiers si elle n'existe pas déjà
+
+cursor.execute('''
+CREATE TABLE IF NOT EXISTS metier (
+    id_metier INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    id_collaborateur INTEGER,
+    id_medecin INTEGER,
+    id_scientifique INTEGER,
+    id_commercial INTEGER,
+    FOREIGN KEY(id_collaborateur) REFERENCES collaborateur(id_collaborateur),
+    FOREIGN KEY(id_medecin) REFERENCES medecin(id_medecin),
+    FOREIGN KEY(id_scientifique) REFERENCES scientifique(id_scientifique),
+    FOREIGN KEY(id_commercial) REFERENCES commercial(id_commercial)
+)
+''')
+
+# Création des tables scientifique, commercial, médecin, collaborateur
+
+cursor.execute('''
+CREATE TABLE IF NOT EXISTS scientifique (
+    id_scientifique INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    code_projet NUMERIC UNIQUE,
+    nvAcces TEXT,
+    nb_unite NUMERIC
+)
+''')
+
+cursor.execute('''
+CREATE TABLE IF NOT EXISTS commercial (
+    id_commercial INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    nvAcces TEXT
+)
+''')
+
+cursor.execute('''
+CREATE TABLE IF NOT EXISTS medecin (
+    id_medecin INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    nvAcces TEXT
+)
+''')
+
+cursor.execute('''
+CREATE TABLE IF NOT EXISTS collaborateur (
+    id_collaborateur INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    nvAcces TEXT
+)
+''')
+
+conn.commit()
 
 def gen_id(prenom, nom):
     # Crée un login à partir du prénom+nom
