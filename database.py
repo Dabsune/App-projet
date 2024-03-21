@@ -13,7 +13,6 @@ class Database:
 
     # Méthode pour configurer les tables de la base de données
     def setup_tables(self):
-        # Création des tables si elles n'existent pas déjà
         self.cursor.execute('''
         CREATE TABLE IF NOT EXISTS employes (
             ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
@@ -49,6 +48,10 @@ class Database:
             FOREIGN KEY(id_scientifique) REFERENCES scientifique(id_scientifique),
             FOREIGN KEY(id_commercial) REFERENCES commercial(id_commercial)
         )
+        ''')
+
+        self.cursor.execute('''
+        ALTER TABLE employes ADD COLUMN mdp_creation_date DATE
         ''')
 
         self.cursor.execute('''
@@ -89,7 +92,7 @@ class Database:
             self.cursor.execute('''
                 INSERT INTO employes (prenom, nom, login, mdp, email, numero, embauche, mdp_creation_date)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-            ''', (prenom, nom, login, mdp, email or None, numero or None, date_embauche, mdp_creation_date))
+            ''', (prenom, nom, login, mdp, email, numero, date_embauche, mdp_creation_date))
             self.conn.commit()  # Validation des modifications dans la base de données
             return True
         except sqlite3.IntegrityError as e:
